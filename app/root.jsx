@@ -1,12 +1,15 @@
 import { cssBundleHref } from "@remix-run/css-bundle";
 
 import {
+  Link,
   Links,
   LiveReload,
   Meta,
   Outlet,
   Scripts,
   ScrollRestoration,
+  isRouteErrorResponse,
+  useRouteError,
 } from "@remix-run/react";
 import styles from "~/styles/main.css"
 import MainNavigation from "./components/mainNavigation";
@@ -31,6 +34,22 @@ export default function App() {
       </body>
     </html>
   );
+}
+
+export function ErrorBoundary() {
+  const error = useRouteError();
+
+  // when true, this is what used to go to `CatchBoundary`
+  if (isRouteErrorResponse(error)) {
+    return (
+      <div>
+          <NewNote />
+      {/* <h1 className="info-message">Oops</h1>
+      <p className="info-message">Status: {error.status}</p> */}
+      <p className="info-message">{error.data.message}</p>
+    </div>
+    );
+  }
 }
 
 export function links(){
